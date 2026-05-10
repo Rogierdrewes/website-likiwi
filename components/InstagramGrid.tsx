@@ -34,12 +34,7 @@ export default function InstagramGrid({
       : photos.filter((p) => p.category === activeCategory)
 
   const handlePhotoClick = (index: number) => {
-    const photo = filtered[index]
-    if (photo.instagramUrl) {
-      window.open(photo.instagramUrl, '_blank', 'noopener,noreferrer')
-    } else {
-      setLightboxIndex(index)
-    }
+    setLightboxIndex(index)
   }
 
   const closeLightbox = () => setLightboxIndex(null)

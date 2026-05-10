@@ -2,10 +2,11 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-      },
+      // Placeholder images (ontwikkeling)
+      { protocol: 'https', hostname: 'picsum.photos' },
+      // Instagram CDN domeinen
+      { protocol: 'https', hostname: '**.cdninstagram.com' },
+      { protocol: 'https', hostname: '**.fbcdn.net' },
     ],
   },
 }

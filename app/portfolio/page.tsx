@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import InstagramGrid from '@/components/InstagramGrid'
 import CTASection from '@/components/CTASection'
-import { photos, type PhotoCategory } from '@/data/photos'
+import { fetchInstagramPhotos } from '@/lib/instagram'
+import { photos as placeholderPhotos, type PhotoCategory } from '@/data/photos'
 
 export const metadata: Metadata = {
   title: 'Portfolio | Fotograaf Groningen',
@@ -33,33 +34,31 @@ export default async function PortfolioPage({
       ? (cat as PhotoCategory)
       : 'all'
 
+  // Haal tot 30 foto's op van Instagram; valt terug op placeholder data
+  const instagramPhotos = await fetchInstagramPhotos(30)
+  const allPhotos = instagramPhotos ?? placeholderPhotos
+  const isLive = instagramPhotos !== null
+
   return (
     <>
       {/* ── Header section ── */}
       <section className="pt-36 pb-12 px-6 bg-warm-sand text-center">
         <p className="text-warm-taupe text-xs uppercase tracking-widest mb-4">
-          Mijn werk
+          {isLive ? 'Rechtstreeks van Instagram' : 'Mijn werk'}
         </p>
         <h1 className="font-serif text-4xl md:text-5xl text-warm-dark mb-5">
           Portfolio
         </h1>
         <p className="text-warm-medium max-w-md mx-auto leading-relaxed">
-          Een selectie van mijn werk — voor de nieuwste foto&apos;s, volg me op{' '}
-          <a
-            href="https://www.instagram.com/likiwifotografie"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-warm-taupe underline underline-offset-2 hover:text-warm-dark transition-colors"
-          >
-            Instagram
-          </a>
-          .
+          {isLive
+            ? `${allPhotos.length} meest recente foto's — automatisch bijgewerkt vanuit Instagram.`
+            : "Een selectie van mijn werk — voor de nieuwste foto's, volg me op Instagram."}
         </p>
       </section>
 
       {/* ── Grid with filter ── */}
       <section className="py-12 px-4 md:px-6 max-w-6xl mx-auto" aria-label="Fotogalerij">
-        <InstagramGrid photos={photos} showFilter initialCategory={initialCategory} />
+        <InstagramGrid photos={allPhotos} showFilter initialCategory={initialCategory} />
       </section>
 
       {/* ── Instagram CTA ── */}

@@ -61,9 +61,9 @@ export default function Lightbox({ photo, onClose, onPrev, onNext }: LightboxPro
         </svg>
       </button>
 
-      {/* Image */}
+      {/* Image + info */}
       <div
-        className="relative max-h-[90vh] max-w-[90vw]"
+        className="relative flex flex-col items-center gap-4 max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         <Image
@@ -71,12 +71,42 @@ export default function Lightbox({ photo, onClose, onPrev, onNext }: LightboxPro
           alt={photo.alt}
           width={photo.width}
           height={photo.height}
-          className="max-h-[85vh] max-w-[85vw] object-contain rounded-sm"
+          className="max-h-[78vh] max-w-[85vw] object-contain rounded-sm"
           priority
+          unoptimized={photo.instagramUrl !== undefined}
         />
-        {photo.caption && (
-          <p className="text-white/70 text-sm text-center mt-3">{photo.caption}</p>
-        )}
+
+        {/* Caption + Instagram link */}
+        <div className="flex items-center gap-4 flex-wrap justify-center">
+          {photo.caption && (
+            <p className="text-white/70 text-sm">{photo.caption}</p>
+          )}
+          {photo.instagramUrl && (
+            <a
+              href={photo.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-white/60 hover:text-white border border-white/20 hover:border-white/50 rounded-full px-4 py-1.5 transition-colors"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+              </svg>
+              Bekijk op Instagram
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Next */}

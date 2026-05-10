@@ -4,7 +4,10 @@ import Link from 'next/link'
 import InstagramGrid from '@/components/InstagramGrid'
 import CTASection from '@/components/CTASection'
 import SEOTextBlock from '@/components/SEOTextBlock'
-import { photos } from '@/data/photos'
+import { fetchInstagramPhotos } from '@/lib/instagram'
+import { photos as placeholderPhotos } from '@/data/photos'
+
+export const revalidate = 3600 // ISR: elke uur opnieuw genereren
 
 export const metadata: Metadata = {
   title: 'Fotograaf in Groningen | Likiwi Fotografie',
@@ -17,9 +20,12 @@ export const metadata: Metadata = {
   },
 }
 
-const featuredPhotos = photos.slice(0, 9)
+export default async function HomePage() {
+  const instagramPhotos = await fetchInstagramPhotos(12)
+  const allPhotos = instagramPhotos ?? placeholderPhotos
+  const featuredPhotos = allPhotos.slice(0, 9)
+  const isLive = instagramPhotos !== null
 
-export default function HomePage() {
   return (
     <>
       {/* ── Hero ── */}
@@ -73,7 +79,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-warm-taupe text-xs uppercase tracking-widest mb-3">
-              Mijn werk
+              {isLive ? 'Rechtstreeks van Instagram' : 'Mijn werk'}
             </p>
             <h2
               id="grid-heading"
@@ -82,8 +88,9 @@ export default function HomePage() {
               Een blik in mijn portfolio
             </h2>
             <p className="text-warm-medium max-w-md mx-auto leading-relaxed">
-              Bekijk mijn meest recente werk — voor de volledige feed, volg me op
-              Instagram.
+              {isLive
+                ? 'Mijn meest recente foto\'s — automatisch bijgewerkt vanuit Instagram.'
+                : 'Bekijk mijn meest recente werk — voor de volledige feed, volg me op Instagram.'}
             </p>
           </div>
 
