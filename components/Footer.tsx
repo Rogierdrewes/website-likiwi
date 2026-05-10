@@ -23,6 +23,7 @@ export default function Footer() {
                 { href: '/', label: 'Home' },
                 { href: '/portfolio', label: 'Portfolio' },
                 { href: '/over-lisa', label: 'Over Lisa' },
+                { href: '/reviews', label: 'Reviews' },
                 { href: '/contact', label: 'Contact' },
               ].map(({ href, label }) => (
                 <Link

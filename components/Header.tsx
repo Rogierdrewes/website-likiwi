@@ -8,6 +8,7 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/over-lisa', label: 'Over Lisa' },
+  { href: '/reviews', label: 'Reviews' },
 ]
 
 export default function Header() {
