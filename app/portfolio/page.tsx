@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 import InstagramGrid from '@/components/InstagramGrid'
+import InstagramEmbedGrid from '@/components/InstagramEmbedGrid'
 import CTASection from '@/components/CTASection'
 import { fetchInstagramPhotos } from '@/lib/instagram'
 import { photos as placeholderPhotos, type PhotoCategory } from '@/data/photos'
+import { instagramPostUrls } from '@/data/instagram-embeds'
 
 export const metadata: Metadata = {
   title: 'Portfolio | Fotograaf Groningen',
@@ -34,31 +36,39 @@ export default async function PortfolioPage({
       ? (cat as PhotoCategory)
       : 'all'
 
-  // Haal tot 30 foto's op van Instagram; valt terug op placeholder data
+  // Prioriteit: 1) Graph API  2) oEmbed-links  3) placeholder
   const instagramPhotos = await fetchInstagramPhotos(30)
   const allPhotos = instagramPhotos ?? placeholderPhotos
+  const hasEmbeds = instagramPostUrls.length > 0
   const isLive = instagramPhotos !== null
+  const mode = isLive ? 'api' : hasEmbeds ? 'embed' : 'placeholder'
 
   return (
     <>
       {/* ── Header section ── */}
       <section className="pt-36 pb-12 px-6 bg-warm-sand text-center">
         <p className="text-warm-taupe text-xs uppercase tracking-widest mb-4">
-          {isLive ? 'Rechtstreeks van Instagram' : 'Mijn werk'}
+          {mode === 'api' ? 'Rechtstreeks van Instagram' : 'Mijn werk'}
         </p>
         <h1 className="font-serif text-4xl md:text-5xl text-warm-dark mb-5">
           Portfolio
         </h1>
         <p className="text-warm-medium max-w-md mx-auto leading-relaxed">
-          {isLive
+          {mode === 'api'
             ? `${allPhotos.length} meest recente foto's — automatisch bijgewerkt vanuit Instagram.`
+            : mode === 'embed'
+            ? `${instagramPostUrls.length} Instagram-posts — klik voor de volledige post.`
             : "Een selectie van mijn werk — voor de nieuwste foto's, volg me op Instagram."}
         </p>
       </section>
 
-      {/* ── Grid with filter ── */}
+      {/* ── Grid: API of oEmbed of placeholder ── */}
       <section className="py-12 px-4 md:px-6 max-w-6xl mx-auto" aria-label="Fotogalerij">
-        <InstagramGrid photos={allPhotos} showFilter initialCategory={initialCategory} />
+        {mode === 'embed' ? (
+          <InstagramEmbedGrid postUrls={instagramPostUrls} />
+        ) : (
+          <InstagramGrid photos={allPhotos} showFilter initialCategory={initialCategory} />
+        )}
       </section>
 
       {/* ── Instagram CTA ── */}
