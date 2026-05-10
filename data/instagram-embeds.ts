@@ -10,9 +10,17 @@
  * bestand niet meer gebruikt.
  */
 export const instagramPostUrls: string[] = [
-  // Vul hier de gekopieerde Instagram-links in, bijv.:
-  // 'https://www.instagram.com/p/ABC123/',
-  // 'https://www.instagram.com/p/DEF456/',
+  'https://www.instagram.com/p/DXM883ojhOG/',
+  'https://www.instagram.com/p/DWGvzqEjWCM/',
+  'https://www.instagram.com/p/DWPOONPjlmH/',
+  'https://www.instagram.com/p/DMqUP97MMuu/',
+  'https://www.instagram.com/p/DIqAcAGiwAo/',
+  'https://www.instagram.com/p/DGdl1_ZNt4c/',
+  'https://www.instagram.com/p/DRO9Ts9DQIL/',
+  'https://www.instagram.com/p/DRHCZCWDZrs/',
+  'https://www.instagram.com/p/DWjmY9zDR4s/',
+  'https://www.instagram.com/p/DXgZrYTjQo3/',
+  'https://www.instagram.com/p/DMlPvcysugr/',
 ]
 
 export function extractShortcode(url: string): string | null {
